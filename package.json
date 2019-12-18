@@ -1,0 +1,28 @@
+{
+    "name": "@chartisan/chartisan",
+    "version": "1.0.0",
+    "description": "The next generation charting experience",
+    "main": "dist/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/chartisan/chartisan.git"
+    },
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc --watch"
+    },
+    "keywords": [
+        "Chart",
+        "Charts",
+        "Chartisan",
+        "Plot",
+        "Plots",
+        "Graphic",
+        "Graphics"
+    ],
+    "author": "Èrik Campobadal Forés <soc@erik.cat>",
+    "license": "MIT",
+    "devDependencies": {
+        "typescript": "^3.7.3"
+    }
+}

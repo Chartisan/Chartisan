@@ -11,17 +11,15 @@ export interface ChartData {
      * @type {string[]}
      * @memberof ChartData
      */
-    labels: string[]
-
+    labels: string[];
     /**
      * Stores the chart extra options.
      *
      * @type {*}
      * @memberof ChartData
      */
-    extra: unknown
+    extra: unknown;
 }
-
 /**
  * Determines if the given object satisfies ChartData.
  *
@@ -29,10 +27,7 @@ export interface ChartData {
  * @param {*} obj
  * @returns {obj is ChartData}
  */
-export function isChartData(obj: any): obj is ChartData {
-    return 'labels' in obj && 'extra' in obj
-}
-
+export declare function isChartData(obj: any): obj is ChartData;
 /**
  * Determine the dataset data.
  *
@@ -46,41 +41,36 @@ export interface DatasetData {
      * @type {number}
      * @memberof DatasetData
      */
-    id: number
-
+    id: number;
     /**
      * Stores the dataset name.
      *
      * @type {string}
      * @memberof DatasetData
      */
-    name: string
-
+    name: string;
     /**
      * Stores the dataset values.
      *
      * @type {number[]}
      * @memberof DatasetData
      */
-    values: number[]
-
+    values: number[];
     /**
      * Determines if the values are datetime.
      *
      * @type {boolean}
      * @memberof DatasetData
      */
-    isDatetime: boolean
-
+    isDatetime: boolean;
     /**
      * Stores the dataset extra options.
      *
      * @type {*}
      * @memberof DatasetData
      */
-    extra: unknown
+    extra: unknown;
 }
-
 /**
  * Determines if obj satisfies ChartData.
  *
@@ -88,16 +78,7 @@ export interface DatasetData {
  * @param {*} obj
  * @returns {obj is DatasetData}
  */
-export function isDatasetData(obj: any): obj is DatasetData {
-    return (
-        'id' in obj &&
-        'name' in obj &&
-        'values' in obj &&
-        'isDatetime' in obj &&
-        'extra' in obj
-    )
-}
-
+export declare function isDatasetData(obj: any): obj is DatasetData;
 /**
  * Represents the server data.
  *
@@ -111,17 +92,15 @@ export interface ServerData {
      * @type {ChartData}
      * @memberof ServerData
      */
-    chart: ChartData
-
+    chart: ChartData;
     /**
      * Stores the datasets.
      *
      * @type {DatasetData[]}
      * @memberof ServerData
      */
-    datasets: DatasetData[]
+    datasets: DatasetData[];
 }
-
 /**
  * Determine if the given  object satisfies ServerData.
  *
@@ -129,11 +108,4 @@ export interface ServerData {
  * @param {*} obj
  * @returns {obj is ServerData}
  */
-export function isServerData(obj: any): obj is ServerData {
-    return (
-        'chart' in obj &&
-        'datasets' in obj &&
-        isChartData(obj.chart) &&
-        obj.datasets.every((d: any) => isDatasetData(d))
-    )
-}
+export declare function isServerData(obj: any): obj is ServerData;

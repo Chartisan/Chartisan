@@ -1,6 +1,6 @@
 import { loader, LoaderOptions } from './loader/index'
 import { error, ErrorOptions } from './error/index'
-import { isServerData } from './data'
+import { isServerData, ServerData } from './data'
 
 /**
  * Represents the states of the chart.
@@ -21,7 +21,7 @@ export enum ChartState {
  * @export
  * @interface ChartisanOptions
  */
-export interface ChartisanOptions {
+export interface ChartisanOptions<D> {
     /**
      * Determines the DOM element element to
      * attach the chart to.
@@ -54,6 +54,15 @@ export interface ChartisanOptions {
      * @memberof ChartisanOptions
      */
     error?: ErrorOptions
+
+    /**
+     * Hoosk that run before the render happens and that are
+     * used to transform the data after the library has done
+     * it's job.
+     *
+     * @memberof ChartisanOptions
+     */
+    hooks?: ((data: D) => D)[]
 }
 
 /**
@@ -61,18 +70,21 @@ export interface ChartisanOptions {
  *
  * @export
  * @interface isChartisan
+ * @template D
  */
-export interface isChartisan {
-    new (options: ChartisanOptions): Chartisan
+export interface isChartisan<D> {
+    new (options: ChartisanOptions<D>): Chartisan<D>
 }
 
 /**
  * Chartisan class
  *
  * @export
+ * @abstract
  * @class Chartisan
+ * @template D
  */
-export abstract class Chartisan {
+export abstract class Chartisan<D> {
     /**
      * Stores the chartisan options. The options
      * assigned here are the defaults and can be
@@ -82,7 +94,7 @@ export abstract class Chartisan {
      * @type {ChartisanOptions}
      * @memberof Chartisan
      */
-    protected options: ChartisanOptions = {
+    protected options: ChartisanOptions<D> = {
         el: '.chart',
         url: '',
         loader: {
@@ -99,7 +111,8 @@ export abstract class Chartisan {
             text: 'There was an error',
             textColor: '#a0aec0',
             debug: true
-        }
+        },
+        hooks: []
     }
 
     /**
@@ -136,7 +149,7 @@ export abstract class Chartisan {
      * @param {ChartisanOptions} { identifier }
      * @memberof Chartisan
      */
-    constructor(options: ChartisanOptions) {
+    constructor(options: ChartisanOptions<D>) {
         const { el } = (this.options = { ...this.options, ...options })
         const element = document.querySelector(el!)
         if (!element)
@@ -195,10 +208,11 @@ export abstract class Chartisan {
      * Requests the data to the server.
      *
      * @protected
+     * @param {boolean} [setLoading=true]
      * @memberof Chartisan
      */
-    protected request() {
-        this.changeTo(ChartState.Loading)
+    protected request(setLoading = true) {
+        if (setLoading) this.changeTo(ChartState.Loading)
         fetch(this.options.url)
             .then(res => res.json())
             .then(res => this.onRawUpdate(res))
@@ -221,10 +235,11 @@ export abstract class Chartisan {
     /**
      * Refresh the chart with new information.
      *
+     * @param {boolean} [setLoading=true]
      * @memberof Chartisan
      */
-    refresh() {
-        this.request()
+    refresh(setLoading = true) {
+        this.request(setLoading)
     }
 
     /**
@@ -236,22 +251,41 @@ export abstract class Chartisan {
      * @memberof Chartisan
      */
     protected onRawUpdate(response: JSON) {
-        // Check if the response is OK.
         if (!isServerData(response))
             return this.onError(new Error('Invalid server data'))
+        /*const data = this.options.hooks!.reduce(
+            (data, hook) => hook(data),
+            this.formatData(response)
+        )*/
+        let data = this.formatData(response)
+        for (const hook of this.options.hooks!) {
+            data = hook(data)
+        }
         this.changeTo(ChartState.Show)
-        this.onUpdate(response)
+        this.onUpdate(data)
     }
+
+    /**
+     * Formats the data of the request to match the data that
+     * the chart needs (acording to the desired front-end).
+     *
+     * @protected
+     * @abstract
+     * @param {ServerData} response
+     * @returns {D}
+     * @memberof Chartisan
+     */
+    protected abstract formatData(response: ServerData): D
 
     /**
      * Handles a successfull response of the chart data.
      *
      * @protected
      * @abstract
-     * @param {JSON} response
+     * @param {D} data
      * @memberof Chartisan
      */
-    protected abstract onUpdate(response: JSON): void
+    protected abstract onUpdate(data: D): void
 
     /**
      * Handles an error when getting the data of the chart.

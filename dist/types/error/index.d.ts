@@ -1,4 +1,10 @@
 export declare type ErrorType = 'general';
+/**
+ * Determine the error options.
+ *
+ * @export
+ * @interface ErrorOptions
+ */
 export interface ErrorOptions {
     color: string;
     text: string;

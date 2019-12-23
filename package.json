@@ -2,14 +2,16 @@
     "name": "@chartisan/chartisan",
     "version": "1.0.0",
     "description": "The next generation charting experience",
-    "main": "dist/index.js",
+    "main": "dist/chartisan.js",
+    "types": "dist/types/index.d.ts",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/chartisan/chartisan.git"
     },
     "scripts": {
-        "build": "tsc",
-        "watch": "tsc --watch"
+        "dev": "rollup -c --environment BUILD:development",
+        "build": "rollup -c --environment BUILD:production",
+        "watch": "rollup -c --environment BUILD:development --watch"
     },
     "keywords": [
         "Chart",
@@ -23,6 +25,24 @@
     "author": "Èrik Campobadal Forés <soc@erik.cat>",
     "license": "MIT",
     "devDependencies": {
+        "@babel/core": "^7.7.7",
+        "@babel/plugin-proposal-class-properties": "^7.7.4",
+        "@babel/plugin-proposal-nullish-coalescing-operator": "^7.7.4",
+        "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
+        "@babel/plugin-proposal-optional-chaining": "^7.7.5",
+        "@babel/preset-env": "^7.7.7",
+        "@babel/preset-typescript": "^7.7.7",
+        "@rollup/plugin-node-resolve": "^6.0.0",
+        "@types/node": "^12.12.21",
+        "rollup": "^1.27.14",
+        "rollup-plugin-babel": "^4.3.3",
+        "rollup-plugin-commonjs": "^10.1.0",
+        "rollup-plugin-gzip": "^2.2.0",
+        "rollup-plugin-terser": "^5.1.3",
+        "rollup-plugin-typescript2": "^0.25.3",
         "typescript": "^3.7.3"
+    },
+    "dependencies": {
+        "deepmerge": "^4.2.2"
     }
 }

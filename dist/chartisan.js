@@ -36,6 +36,26 @@ function isServerData(obj) {
         obj.datasets.every(function (d) { return isDatasetData(d); }));
 }
 
+/**
+ * Represents the hooks of the chart.
+ *
+ * @export
+ * @class Hooks
+ * @template D
+ */
+var Hooks = /** @class */ (function () {
+    function Hooks() {
+        /**
+         * Stores the hooks.
+         *
+         * @type {Hook<D>[]}
+         * @memberof Hooks
+         */
+        this.hooks = [];
+    }
+    return Hooks;
+}());
+
 var isMergeableObject = function isMergeableObject(value) {
 	return isNonNullObject(value)
 		&& !isSpecial(value)
@@ -207,6 +227,20 @@ var __assign = function() {
     return __assign.apply(this, arguments);
 };
 
+var general = (function (_a) {
+    var size = _a.size, color = _a.color;
+    return "\n    <svg\n        role=\"img\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        width=\"" + size[0] + "\"\n        height=\"" + size[1] + "\"\n        viewBox=\"0 0 24 24\"\n        aria-labelledby=\"refreshIconTitle\"\n        stroke=\"" + color + "\"\n        stroke-width=\"1\"\n        stroke-linecap=\"square\"\n        stroke-linejoin=\"miter\"\n        fill=\"none\"\n        color=\"" + color + "\"\n    >\n        <title id=\"refreshIconTitle\">Refresh</title>\n        <polyline points=\"22 12 19 15 16 12\"/>\n        <path d=\"M11,20 C6.581722,20 3,16.418278 3,12 C3,7.581722 6.581722,4 11,4 C15.418278,4 19,7.581722 19,12 L19,14\"/>\n    </svg>\n";
+});
+
+var errors = {
+    general: general
+};
+var error = function (options, error) { return "\n    <div class=\"chartisan-help-block\">\n    <div class=\"chartisan-refresh-chart\">\n        " + errors[options.type](options) + "\n    </div>\n    " + (options.text != ''
+    ? "\n                <div class=\"chartisan-help-text\" style=\"color: " + options.textColor + ";\">\n                    " + options.text + "\n                </div>\n            "
+    : '') + "\n    " + (options.debug
+    ? "<div class=\"chartisan-help-text-error\">\n        " + error.message + "\n    </div>"
+    : '') + "\n    </div>\n"; };
+
 /**
  * The bar loader.
  *
@@ -235,20 +269,6 @@ var loaders = {
  */
 var loader = function (options) { return "\n    <div class=\"chartisan-help-block\">\n        " + loaders[options.type](options) + "\n        " + (options.text != ''
     ? "\n                    <div class=\"chartisan-help-text\" style=\"color: " + options.textColor + ";\">\n                        " + options.text + "\n                    </div>\n                "
-    : '') + "\n    </div>\n"; };
-
-var general = (function (_a) {
-    var size = _a.size, color = _a.color;
-    return "\n    <svg\n        role=\"img\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        width=\"" + size[0] + "\"\n        height=\"" + size[1] + "\"\n        viewBox=\"0 0 24 24\"\n        aria-labelledby=\"refreshIconTitle\"\n        stroke=\"" + color + "\"\n        stroke-width=\"1\"\n        stroke-linecap=\"square\"\n        stroke-linejoin=\"miter\"\n        fill=\"none\"\n        color=\"" + color + "\"\n    >\n        <title id=\"refreshIconTitle\">Refresh</title>\n        <polyline points=\"22 12 19 15 16 12\"/>\n        <path d=\"M11,20 C6.581722,20 3,16.418278 3,12 C3,7.581722 6.581722,4 11,4 C15.418278,4 19,7.581722 19,12 L19,14\"/>\n    </svg>\n";
-});
-
-var errors = {
-    general: general
-};
-var error = function (options, error) { return "\n    <div class=\"chartisan-help-block\">\n    <div class=\"chartisan-refresh-chart\">\n        " + errors[options.type](options) + "\n    </div>\n    " + (options.text != ''
-    ? "\n                <div class=\"chartisan-help-text\" style=\"color: " + options.textColor + ";\">\n                    " + options.text + "\n                </div>\n            "
-    : '') + "\n    " + (options.debug
-    ? "<div class=\"chartisan-help-text-error\">\n        " + error.message + "\n    </div>"
     : '') + "\n    </div>\n"; };
 
 /**
@@ -307,7 +327,7 @@ var Chartisan = /** @class */ (function () {
                 textColor: '#a0aec0',
                 debug: true
             },
-            hooks: []
+            hooks: undefined
         };
         /**
          * State of the chart.
@@ -417,9 +437,11 @@ var Chartisan = /** @class */ (function () {
             this.formatData(response)
         )*/
         var data = this.formatData(response);
-        for (var _i = 0, _a = this.options.hooks; _i < _a.length; _i++) {
-            var hook = _a[_i];
-            data = hook(data);
+        if (this.options.hooks) {
+            for (var _i = 0, _a = this.options.hooks.hooks; _i < _a.length; _i++) {
+                var hook = _a[_i];
+                data = hook(data);
+            }
         }
         this.changeTo(ChartState.Show);
         this.onUpdate(data);
@@ -446,4 +468,4 @@ var Chartisan = /** @class */ (function () {
     return Chartisan;
 }());
 
-export { ChartState, Chartisan, colorPalette, error, isChartData, isDatasetData, isServerData, loader, mergeOptions };
+export { ChartState, Chartisan, Hooks, colorPalette, error, isChartData, isDatasetData, isServerData, loader, mergeOptions };

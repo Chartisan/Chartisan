@@ -1,6 +1,7 @@
-import { loader, LoaderOptions } from './loader/index'
-import { error, ErrorOptions } from './error/index'
+import { Hooks } from './hooks'
 import { isServerData, ServerData } from './data'
+import { error, ErrorOptions } from './error/index'
+import { loader, LoaderOptions } from './loader/index'
 
 /**
  * Represents the states of the chart.
@@ -56,13 +57,13 @@ export interface ChartisanOptions<D> {
     error?: ErrorOptions
 
     /**
-     * Hoosk that run before the render happens and that are
+     * Hooks that run before the render happens and that are
      * used to transform the data after the library has done
      * it's job.
      *
      * @memberof ChartisanOptions
      */
-    hooks?: ((data: D) => D)[]
+    hooks?: Hooks<D>
 }
 
 /**
@@ -112,7 +113,7 @@ export abstract class Chartisan<D> {
             textColor: '#a0aec0',
             debug: true
         },
-        hooks: []
+        hooks: undefined
     }
 
     /**
@@ -258,8 +259,10 @@ export abstract class Chartisan<D> {
             this.formatData(response)
         )*/
         let data = this.formatData(response)
-        for (const hook of this.options.hooks!) {
-            data = hook(data)
+        if (this.options.hooks) {
+            for (const hook of this.options.hooks.hooks) {
+                data = hook(data)
+            }
         }
         this.changeTo(ChartState.Show)
         this.onUpdate(data)

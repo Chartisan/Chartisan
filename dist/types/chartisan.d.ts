@@ -1,6 +1,7 @@
-import { LoaderOptions } from './loader/index';
-import { ErrorOptions } from './error/index';
+import { Hooks } from './hooks';
 import { ServerData } from './data';
+import { ErrorOptions } from './error/index';
+import { LoaderOptions } from './loader/index';
 /**
  * Represents the states of the chart.
  *
@@ -50,13 +51,13 @@ export interface ChartisanOptions<D> {
      */
     error?: ErrorOptions;
     /**
-     * Hoosk that run before the render happens and that are
+     * Hooks that run before the render happens and that are
      * used to transform the data after the library has done
      * it's job.
      *
      * @memberof ChartisanOptions
      */
-    hooks?: ((data: D) => D)[];
+    hooks?: Hooks<D>;
 }
 /**
  * Interface that denotes a class value.

@@ -1,5 +1,11 @@
 import merge from 'deepmerge'
 
+/**
+ * Stores the default color palette.
+ *
+ * @export
+ * @type {string[]}
+ */
 export const colorPalette = [
     '#667EEA',
     '#F56565',
@@ -12,4 +18,10 @@ export const colorPalette = [
     '#ED64A6'
 ]
 
+/**
+ * Used to merge different nested options.
+ *
+ * @export
+ * @type {typeof merge}
+ */
 export const mergeOptions = merge

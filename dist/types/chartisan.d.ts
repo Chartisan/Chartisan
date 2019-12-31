@@ -20,7 +20,7 @@ export declare enum ChartState {
  * @export
  * @interface ChartisanOptions
  */
-export interface ChartisanOptions<D> {
+export interface ChartisanOptions<D> extends Omit<UpdateOptions, 'background'> {
     /**
      * Determines the DOM element element to
      * attach the chart to.
@@ -29,13 +29,6 @@ export interface ChartisanOptions<D> {
      * @memberof ChartisanOptions
      */
     el?: string;
-    /**
-     * Determines the chart URL.
-     *
-     * @type {string}
-     * @memberof ChartisanOptions
-     */
-    url: string;
     /**
      * Determines the options of the loader.
      *
@@ -68,6 +61,51 @@ export interface ChartisanOptions<D> {
  */
 export interface isChartisan<D> {
     new (options: ChartisanOptions<D>): Chartisan<D>;
+}
+/**
+ * Options to update the chart.
+ *
+ * @export
+ * @interface UpdateOptions
+ */
+export interface UpdateOptions {
+    /**
+     * Determines the request url.
+     * Replaces the old one.
+     *
+     * @type {string}
+     * @memberof UpdateOptions
+     */
+    url?: string;
+    /**
+     * Determines the options of the request.
+     * Replaces the old one.
+     *
+     * @type {RequestInit}
+     * @memberof UpdateOptions
+     */
+    options?: RequestInit;
+    /**
+     * Determines the data of the chart.
+     * If set, no request will be performed as it
+     * will be static data. If a function is provided,
+     * the chart will display a loading message while
+     * it resolves the data.
+     *
+     * @memberof UpdateOptions
+     */
+    data?: ServerData | (() => ServerData);
+    /**
+     * Loads the data in the chart in the background,
+     * without any visual feedback to the user, this is
+     * used to perform updates without displaying the
+     * "Loading chart" text and therefore, without re-creating
+     * the chart.
+     *
+     * @type {boolean}
+     * @memberof UpdateOptions
+     */
+    background?: boolean;
 }
 /**
  * Chartisan class
@@ -113,6 +151,8 @@ export declare abstract class Chartisan<D> {
      * @memberof Chartisan
      */
     protected cstate: ChartState;
+    protected body: HTMLDivElement;
+    protected modal: HTMLDivElement;
     /**
      * Creates an instance of Chartisan.
      *
@@ -120,6 +160,7 @@ export declare abstract class Chartisan<D> {
      * @memberof Chartisan
      */
     constructor(options: ChartisanOptions<D>);
+    private setModal;
     /**
      * Changes the status of the chart.
      *
@@ -142,7 +183,7 @@ export declare abstract class Chartisan<D> {
      * @param {boolean} [setLoading=true]
      * @memberof Chartisan
      */
-    protected request(setLoading?: boolean): void;
+    protected request(options?: UpdateOptions): void;
     /**
      * Attaches the refresh event handler to the icon.
      *
@@ -156,7 +197,17 @@ export declare abstract class Chartisan<D> {
      * @param {boolean} [setLoading=true]
      * @memberof Chartisan
      */
-    refresh(setLoading?: boolean): void;
+    update(options?: UpdateOptions): void;
+    /**
+     * Gets the data from a given request, applying
+     * the hooks of the chart.
+     *
+     * @protected
+     * @param {ServerData} response
+     * @returns
+     * @memberof Chartisan
+     */
+    protected getDataFrom(response: ServerData): D;
     /**
      * Called when the data is correctly recieved from
      * the server. This method calls onUpdate() internally.
@@ -165,7 +216,7 @@ export declare abstract class Chartisan<D> {
      * @param {JSON} response
      * @memberof Chartisan
      */
-    protected onRawUpdate(response: JSON): void;
+    protected onRawUpdate(response: JSON, options?: UpdateOptions): void;
     /**
      * Formats the data of the request to match the data that
      * the chart needs (acording to the desired front-end).
@@ -186,6 +237,16 @@ export declare abstract class Chartisan<D> {
      * @memberof Chartisan
      */
     protected abstract onUpdate(data: D): void;
+    /**
+     * Called when the chart has to be updated from
+     * the background, without creating a new chart instance.
+     *
+     * @protected
+     * @abstract
+     * @param {D} data
+     * @memberof Chartisan
+     */
+    protected abstract onBackgroundUpdate(data: D): void;
     /**
      * Handles an error when getting the data of the chart.
      *

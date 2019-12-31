@@ -188,6 +188,12 @@ var deepmerge_1 = deepmerge;
 
 var cjs = deepmerge_1;
 
+/**
+ * Stores the default color palette.
+ *
+ * @export
+ * @type {string[]}
+ */
 var colorPalette = [
     '#667EEA',
     '#F56565',
@@ -199,6 +205,12 @@ var colorPalette = [
     '#4299E1',
     '#ED64A6'
 ];
+/**
+ * Used to merge different nested options.
+ *
+ * @export
+ * @type {typeof merge}
+ */
 var mergeOptions = cjs;
 
 /*! *****************************************************************************
@@ -311,7 +323,9 @@ var Chartisan = /** @class */ (function () {
          */
         this.options = {
             el: '.chart',
-            url: '',
+            url: undefined,
+            options: undefined,
+            data: undefined,
             loader: {
                 type: 'bar',
                 size: [35, 35],
@@ -343,8 +357,17 @@ var Chartisan = /** @class */ (function () {
             throw Error("[Chartisan] Unable to find an element to bind the chart to a DOM element with the selector = '" + el + "'");
         this.element = element;
         this.controller = document.createElement('div');
+        this.body = document.createElement('div');
+        this.modal = document.createElement('div');
         this.bootstrap();
     }
+    Chartisan.prototype.setModal = function (_a) {
+        var _b = _a.show, show = _b === void 0 ? true : _b, _c = _a.color, color = _c === void 0 ? '#FFFFFF' : _c, content = _a.content;
+        this.modal.style.backgroundColor = color;
+        this.modal.style.display = show ? 'flex' : 'none';
+        if (content)
+            this.modal.innerHTML = content;
+    };
     /**
      * Changes the status of the chart.
      *
@@ -355,15 +378,23 @@ var Chartisan = /** @class */ (function () {
     Chartisan.prototype.changeTo = function (state, err) {
         switch (state) {
             case (ChartState.Initializing, ChartState.Loading): {
-                this.controller.innerHTML = loader(this.options.loader);
+                // this.body.innerHTML = loader(this.options.loader!)
+                this.setModal({
+                    show: true,
+                    content: loader(this.options.loader)
+                });
                 break;
             }
             case ChartState.Show: {
-                this.controller.innerHTML = '';
+                // this.body.innerHTML = ''
+                this.setModal({ show: false });
                 break;
             }
             case ChartState.Error: {
-                this.controller.innerHTML = error(this.options.error, (err !== null && err !== void 0 ? err : new Error('Unknown Error')));
+                this.setModal({
+                    show: true,
+                    content: error(this.options.error, (err !== null && err !== void 0 ? err : new Error('Unknown Error')))
+                });
                 this.refreshEvent();
                 break;
             }
@@ -377,11 +408,16 @@ var Chartisan = /** @class */ (function () {
      * @memberof Chartisan
      */
     Chartisan.prototype.bootstrap = function () {
-        // Append the controller to the element.
+        // Append the controller and the modal
+        // to the element.
         this.element.appendChild(this.controller);
-        // Append the chartisan class to it.
-        this.controller.classList.add('chartisan');
-        this.request();
+        this.controller.appendChild(this.body);
+        this.controller.appendChild(this.modal);
+        // Append the classes to them.
+        this.controller.classList.add('chartisan-controller');
+        this.body.classList.add('chartisan-body');
+        this.modal.classList.add('chartisan-modal');
+        this.update(this.options);
     };
     /**
      * Requests the data to the server.
@@ -390,14 +426,13 @@ var Chartisan = /** @class */ (function () {
      * @param {boolean} [setLoading=true]
      * @memberof Chartisan
      */
-    Chartisan.prototype.request = function (setLoading) {
+    Chartisan.prototype.request = function (options) {
         var _this = this;
-        if (setLoading === void 0) { setLoading = true; }
-        if (setLoading)
-            this.changeTo(ChartState.Loading);
-        fetch(this.options.url)
+        if (!this.options.url)
+            this.onError(new Error('[Chartisan] No URL provided to fetch the data.'));
+        fetch(this.options.url, this.options.options)
             .then(function (res) { return res.json(); })
-            .then(function (res) { return _this.onRawUpdate(res); })
+            .then(function (res) { return _this.onRawUpdate(res, options); })
             .catch(function (err) { return _this.onError(err); });
     };
     /**
@@ -409,7 +444,7 @@ var Chartisan = /** @class */ (function () {
     Chartisan.prototype.refreshEvent = function () {
         var _this = this;
         var refresh = this.controller.getElementsByClassName('chartisan-refresh-chart')[0];
-        refresh.addEventListener('click', function () { return _this.refresh(); }, { once: true });
+        refresh.addEventListener('click', function () { return _this.update(); }, { once: true });
     };
     /**
      * Refresh the chart with new information.
@@ -417,9 +452,54 @@ var Chartisan = /** @class */ (function () {
      * @param {boolean} [setLoading=true]
      * @memberof Chartisan
      */
-    Chartisan.prototype.refresh = function (setLoading) {
-        if (setLoading === void 0) { setLoading = true; }
-        this.request(setLoading);
+    Chartisan.prototype.update = function (options) {
+        var _a, _b, _c, _d, _e;
+        // Replace the configuration options.
+        if ((_a = options) === null || _a === void 0 ? void 0 : _a.url)
+            this.options.url = options.url;
+        if ((_b = options) === null || _b === void 0 ? void 0 : _b.options)
+            this.options.options = options.options;
+        // Check to see if it's static data.
+        if ((_c = options) === null || _c === void 0 ? void 0 : _c.data) {
+            // There's no need to request
+            // new data from the server.
+            var serverData = void 0;
+            if (!isServerData(options.data)) {
+                if (!((_d = options) === null || _d === void 0 ? void 0 : _d.background))
+                    this.changeTo(ChartState.Loading);
+                serverData = options.data();
+            }
+            else {
+                serverData = options.data;
+            }
+            var data = this.getDataFrom(serverData);
+            this.changeTo(ChartState.Show);
+            return options.background
+                ? this.onBackgroundUpdate(data)
+                : this.onUpdate(data);
+        }
+        if (!((_e = options) === null || _e === void 0 ? void 0 : _e.background))
+            this.changeTo(ChartState.Loading);
+        this.request(options);
+    };
+    /**
+     * Gets the data from a given request, applying
+     * the hooks of the chart.
+     *
+     * @protected
+     * @param {ServerData} response
+     * @returns
+     * @memberof Chartisan
+     */
+    Chartisan.prototype.getDataFrom = function (response) {
+        var data = this.formatData(response);
+        if (this.options.hooks) {
+            for (var _i = 0, _a = this.options.hooks.hooks; _i < _a.length; _i++) {
+                var hook = _a[_i];
+                data = hook(data);
+            }
+        }
+        return data;
     };
     /**
      * Called when the data is correctly recieved from
@@ -429,22 +509,14 @@ var Chartisan = /** @class */ (function () {
      * @param {JSON} response
      * @memberof Chartisan
      */
-    Chartisan.prototype.onRawUpdate = function (response) {
+    Chartisan.prototype.onRawUpdate = function (response, options) {
+        var _a;
         if (!isServerData(response))
             return this.onError(new Error('Invalid server data'));
-        /*const data = this.options.hooks!.reduce(
-            (data, hook) => hook(data),
-            this.formatData(response)
-        )*/
-        var data = this.formatData(response);
-        if (this.options.hooks) {
-            for (var _i = 0, _a = this.options.hooks.hooks; _i < _a.length; _i++) {
-                var hook = _a[_i];
-                data = hook(data);
-            }
-        }
+        var data = this.getDataFrom(response);
         this.changeTo(ChartState.Show);
-        this.onUpdate(data);
+        ((_a = options) === null || _a === void 0 ? void 0 : _a.background) ? this.onBackgroundUpdate(data)
+            : this.onUpdate(data);
     };
     /**
      * Handles an error when getting the data of the chart.

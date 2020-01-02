@@ -65,14 +65,6 @@ export interface DatasetData {
     values: number[]
 
     /**
-     * Determines if the values are datetime.
-     *
-     * @type {boolean}
-     * @memberof DatasetData
-     */
-    isDatetime: boolean
-
-    /**
      * Stores the dataset extra options.
      *
      * @type {*}
@@ -89,13 +81,7 @@ export interface DatasetData {
  * @returns {obj is DatasetData}
  */
 export function isDatasetData(obj: any): obj is DatasetData {
-    return (
-        'id' in obj &&
-        'name' in obj &&
-        'values' in obj &&
-        'isDatetime' in obj &&
-        'extra' in obj
-    )
+    return 'id' in obj && 'name' in obj && 'values' in obj && 'extra' in obj
 }
 
 /**

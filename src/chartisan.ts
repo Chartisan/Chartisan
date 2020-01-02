@@ -22,7 +22,8 @@ export enum ChartState {
  * @export
  * @interface ChartisanOptions
  */
-export interface ChartisanOptions<D> extends Omit<UpdateOptions, 'background'> {
+export interface ChartisanOptions<D>
+    extends Omit<UpdateOptions, 'background' | 'additional'> {
     /**
      * Determines the DOM element element to
      * attach the chart to.
@@ -74,8 +75,9 @@ export interface isChartisan<D> {
  *
  * @export
  * @interface UpdateOptions
+ * @template U
  */
-export interface UpdateOptions {
+export interface UpdateOptions<U = {}> {
     /**
      * Determines the request url.
      * Replaces the old one.
@@ -116,6 +118,14 @@ export interface UpdateOptions {
      * @memberof UpdateOptions
      */
     background?: boolean
+
+    /**
+     * Store the additional options for the update function.
+     *
+     * @type {U}
+     * @memberof UpdateOptions
+     */
+    additional?: U
 }
 
 /**
@@ -219,7 +229,24 @@ export abstract class Chartisan<D> {
      * @memberof Chartisan
      */
     protected cstate: ChartState = ChartState.Initializing
+
+    /**
+     * Represents the body where the chart is located.
+     *
+     * @protected
+     * @type {HTMLDivElement}
+     * @memberof Chartisan
+     */
     protected body: HTMLDivElement
+
+    /**
+     * Represents the modal to show when loading
+     * or showing a chart error.
+     *
+     * @protected
+     * @type {HTMLDivElement}
+     * @memberof Chartisan
+     */
     protected modal: HTMLDivElement
 
     /**
@@ -242,6 +269,17 @@ export abstract class Chartisan<D> {
         this.bootstrap()
     }
 
+    /**
+     * Set he modal settings.
+     *
+     * @private
+     * @param {ModalOptions} {
+     *         show = true,
+     *         color = '#FFFFFF',
+     *         content
+     *     }
+     * @memberof Chartisan
+     */
     private setModal({
         show = true,
         color = '#FFFFFF',
@@ -312,10 +350,11 @@ export abstract class Chartisan<D> {
      * Requests the data to the server.
      *
      * @protected
-     * @param {boolean} [setLoading=true]
+     * @template U
+     * @param {UpdateOptions<U>} [options]
      * @memberof Chartisan
      */
-    protected request(options?: UpdateOptions) {
+    protected request<U>(options?: UpdateOptions<U>) {
         if (!this.options.url)
             this.onError(
                 new Error('[Chartisan] No URL provided to fetch the data.')
@@ -345,7 +384,7 @@ export abstract class Chartisan<D> {
      * @param {boolean} [setLoading=true]
      * @memberof Chartisan
      */
-    update(options?: UpdateOptions) {
+    update<U>(options?: UpdateOptions<U>) {
         // Replace the configuration options.
         if (options?.url) this.options.url = options.url
         if (options?.options) this.options.options = options.options
@@ -363,8 +402,8 @@ export abstract class Chartisan<D> {
             const data = this.getDataFrom(serverData)
             this.changeTo(ChartState.Show)
             return options.background
-                ? this.onBackgroundUpdate(data)
-                : this.onUpdate(data)
+                ? this.onBackgroundUpdate(data, options?.additional)
+                : this.onUpdate(data, options?.additional)
         }
         if (!options?.background) this.changeTo(ChartState.Loading)
         this.request(options)
@@ -394,17 +433,20 @@ export abstract class Chartisan<D> {
      * the server. This method calls onUpdate() internally.
      *
      * @protected
+     * @template U
      * @param {JSON} response
+     * @param {UpdateOptions<U>} [options]
+     * @returns
      * @memberof Chartisan
      */
-    protected onRawUpdate(response: JSON, options?: UpdateOptions) {
+    protected onRawUpdate<U>(response: JSON, options?: UpdateOptions<U>) {
         if (!isServerData(response))
             return this.onError(new Error('Invalid server data'))
         const data = this.getDataFrom(response)
         this.changeTo(ChartState.Show)
         options?.background
-            ? this.onBackgroundUpdate(data)
-            : this.onUpdate(data)
+            ? this.onBackgroundUpdate(data, options?.additional)
+            : this.onUpdate(data, options?.additional)
     }
 
     /**
@@ -424,10 +466,12 @@ export abstract class Chartisan<D> {
      *
      * @protected
      * @abstract
+     * @template U
      * @param {D} data
+     * @param {U} [options]
      * @memberof Chartisan
      */
-    protected abstract onUpdate(data: D): void
+    protected abstract onUpdate<U>(data: D, options?: U): void
 
     /**
      * Called when the chart has to be updated from
@@ -435,10 +479,12 @@ export abstract class Chartisan<D> {
      *
      * @protected
      * @abstract
+     * @template U
      * @param {D} data
+     * @param {U} [options]
      * @memberof Chartisan
      */
-    protected abstract onBackgroundUpdate(data: D): void
+    protected abstract onBackgroundUpdate<U>(data: D, options?: U): void
 
     /**
      * Handles an error when getting the data of the chart.

@@ -361,6 +361,17 @@ var Chartisan = /** @class */ (function () {
         this.modal = document.createElement('div');
         this.bootstrap();
     }
+    /**
+     * Set he modal settings.
+     *
+     * @private
+     * @param {ModalOptions} {
+     *         show = true,
+     *         color = '#FFFFFF',
+     *         content
+     *     }
+     * @memberof Chartisan
+     */
     Chartisan.prototype.setModal = function (_a) {
         var _b = _a.show, show = _b === void 0 ? true : _b, _c = _a.color, color = _c === void 0 ? '#FFFFFF' : _c, content = _a.content;
         this.modal.style.backgroundColor = color;
@@ -423,7 +434,8 @@ var Chartisan = /** @class */ (function () {
      * Requests the data to the server.
      *
      * @protected
-     * @param {boolean} [setLoading=true]
+     * @template U
+     * @param {UpdateOptions<U>} [options]
      * @memberof Chartisan
      */
     Chartisan.prototype.request = function (options) {
@@ -453,7 +465,7 @@ var Chartisan = /** @class */ (function () {
      * @memberof Chartisan
      */
     Chartisan.prototype.update = function (options) {
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c, _d, _e, _f, _g;
         // Replace the configuration options.
         if ((_a = options) === null || _a === void 0 ? void 0 : _a.url)
             this.options.url = options.url;
@@ -475,10 +487,10 @@ var Chartisan = /** @class */ (function () {
             var data = this.getDataFrom(serverData);
             this.changeTo(ChartState.Show);
             return options.background
-                ? this.onBackgroundUpdate(data)
-                : this.onUpdate(data);
+                ? this.onBackgroundUpdate(data, (_e = options) === null || _e === void 0 ? void 0 : _e.additional)
+                : this.onUpdate(data, (_f = options) === null || _f === void 0 ? void 0 : _f.additional);
         }
-        if (!((_e = options) === null || _e === void 0 ? void 0 : _e.background))
+        if (!((_g = options) === null || _g === void 0 ? void 0 : _g.background))
             this.changeTo(ChartState.Loading);
         this.request(options);
     };
@@ -506,17 +518,20 @@ var Chartisan = /** @class */ (function () {
      * the server. This method calls onUpdate() internally.
      *
      * @protected
+     * @template U
      * @param {JSON} response
+     * @param {UpdateOptions<U>} [options]
+     * @returns
      * @memberof Chartisan
      */
     Chartisan.prototype.onRawUpdate = function (response, options) {
-        var _a;
+        var _a, _b, _c;
         if (!isServerData(response))
             return this.onError(new Error('Invalid server data'));
         var data = this.getDataFrom(response);
         this.changeTo(ChartState.Show);
-        ((_a = options) === null || _a === void 0 ? void 0 : _a.background) ? this.onBackgroundUpdate(data)
-            : this.onUpdate(data);
+        ((_a = options) === null || _a === void 0 ? void 0 : _a.background) ? this.onBackgroundUpdate(data, (_b = options) === null || _b === void 0 ? void 0 : _b.additional)
+            : this.onUpdate(data, (_c = options) === null || _c === void 0 ? void 0 : _c.additional);
     };
     /**
      * Handles an error when getting the data of the chart.

@@ -57,13 +57,6 @@ export interface DatasetData {
      */
     values: number[];
     /**
-     * Determines if the values are datetime.
-     *
-     * @type {boolean}
-     * @memberof DatasetData
-     */
-    isDatetime: boolean;
-    /**
      * Stores the dataset extra options.
      *
      * @type {*}

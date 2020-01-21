@@ -1,15 +1,12 @@
 import gzip from 'rollup-plugin-gzip'
-// import ts from '@wessberg/rollup-plugin-ts'
+import postcss from 'rollup-plugin-postcss'
 import { terser } from 'rollup-plugin-terser'
 import commonjs from 'rollup-plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve'
 import { peerDependencies } from './package.json'
-// import typescript from '@rollup/plugin-typescript'
-// import babel from 'rollup-plugin-babel'
 import typescript from 'rollup-plugin-typescript2'
-import { DEFAULT_EXTENSIONS } from '@babel/core'
 
-const extensions = [...DEFAULT_EXTENSIONS, '.ts', '.tsx']
+const extensions = ['.js', '.mjs', '.jsx', '.es6', '.es', '.ts', '.tsx']
 
 export default {
     input: 'src/index.ts',
@@ -25,10 +22,10 @@ export default {
     ],
     external: [...Object.keys(peerDependencies || {})],
     plugins: [
+        postcss(),
         typescript({ useTsconfigDeclarationDir: true }),
         resolve({ extensions }),
         commonjs({ include: 'node_modules/**' }),
-        // babel({ extensions, include: ['src/**/*'] }),
         ...(process.env.BUILD === 'production' ? [terser(), gzip()] : [])
     ]
 }

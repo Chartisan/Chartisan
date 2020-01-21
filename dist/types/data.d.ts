@@ -1,4 +1,13 @@
 /**
+ * Determines how the extra data looks like.
+ *
+ * @export
+ * @interface ExtraData
+ */
+export interface ExtraData {
+    [key: string]: unknown;
+}
+/**
  * Represents the chart data.
  *
  * @export
@@ -15,10 +24,10 @@ export interface ChartData {
     /**
      * Stores the chart extra options.
      *
-     * @type {*}
+     * @type {ExtraData}
      * @memberof ChartData
      */
-    extra: unknown;
+    extra: ExtraData;
 }
 /**
  * Determines if the given object satisfies ChartData.
@@ -59,10 +68,10 @@ export interface DatasetData {
     /**
      * Stores the dataset extra options.
      *
-     * @type {*}
+     * @type {ExtraData}
      * @memberof DatasetData
      */
-    extra: unknown;
+    extra: ExtraData;
 }
 /**
  * Determines if obj satisfies ChartData.

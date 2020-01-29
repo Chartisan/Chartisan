@@ -1,4 +1,5 @@
 import { Hooks } from './hooks'
+import { mergeOptions } from './helpers'
 import { isServerData, ServerData } from './data'
 import { error, ErrorOptions } from './error/index'
 import { loader, LoaderOptions } from './loader/index'
@@ -356,9 +357,7 @@ export abstract class Chartisan<D> {
      */
     protected request<U>(options?: UpdateOptions<U>) {
         if (!this.options.url)
-            this.onError(
-                new Error('[Chartisan] No URL provided to fetch the data.')
-            )
+            return this.onError(new Error('No URL provided to fetch the data.'))
         fetch(this.options.url!, this.options.options)
             .then(res => res.json())
             .then(res => this.onRawUpdate(res, options))
@@ -422,7 +421,7 @@ export abstract class Chartisan<D> {
         let data = this.formatData(response)
         if (this.options.hooks) {
             for (const hook of this.options.hooks.hooks) {
-                data = hook(data)
+                data = hook(data, mergeOptions)
             }
         }
         return data

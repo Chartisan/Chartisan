@@ -1,7 +1,7 @@
 {
     "name": "@chartisan/chartisan",
-    "version": "1.0.0",
-    "description": "The next generation charting experience",
+    "version": "1.0.1",
+    "description": "Supercharged language agnostic charts",
     "main": "dist/chartisan.js",
     "types": "dist/types/index.d.ts",
     "repository": {
@@ -9,9 +9,12 @@
         "url": "git+https://github.com/chartisan/chartisan.git"
     },
     "scripts": {
-        "dev": "rollup -c --environment BUILD:development",
-        "build": "rollup -c --environment BUILD:production",
-        "watch": "rollup -c --environment BUILD:development --watch"
+        "dev": "ultrabundle",
+        "watch": "ultrabundle --watch",
+        "prod": "ultrabundle --optimize",
+        "docs": "typedoc src",
+        "release": "npm run prod && npm run docs",
+        "publish": "npm run release && npm publish --access public"
     },
     "keywords": [
         "Chart",
@@ -25,16 +28,10 @@
     "author": "Èrik Campobadal Forés <soc@erik.cat>",
     "license": "MIT",
     "devDependencies": {
-        "@rollup/plugin-node-resolve": "^6.0.0",
         "@types/node": "^12.12.21",
-        "rollup": "^1.27.14",
-        "rollup-plugin-babel": "^4.3.3",
-        "rollup-plugin-commonjs": "^10.1.0",
-        "rollup-plugin-gzip": "^2.2.0",
-        "rollup-plugin-postcss": "^2.0.3",
-        "rollup-plugin-terser": "^5.1.3",
-        "rollup-plugin-typescript2": "^0.25.3",
-        "typescript": "^3.7.3"
+        "typedoc": "^0.16.5",
+        "typescript": "^3.7.3",
+        "ultrabundle": "^0.1.1"
     },
     "dependencies": {
         "deepmerge": "^4.2.2"

@@ -1,0 +1,6 @@
+[
+    {
+        "input": "src/index.ts",
+        "output": "dist/chartisan.js"
+    }
+]

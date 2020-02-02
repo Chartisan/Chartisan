@@ -29,7 +29,7 @@ export interface ChartData {
      * @type {ExtraData}
      * @memberof ChartData
      */
-    extra: ExtraData
+    extra?: ExtraData
 }
 
 /**
@@ -40,7 +40,7 @@ export interface ChartData {
  * @returns {obj is ChartData}
  */
 export function isChartData(obj: any): obj is ChartData {
-    return 'labels' in obj && 'extra' in obj
+    return 'labels' in obj
 }
 
 /**
@@ -50,14 +50,6 @@ export function isChartData(obj: any): obj is ChartData {
  * @interface DatasetData
  */
 export interface DatasetData {
-    /**
-     * Represents the dataset identifier.
-     *
-     * @type {number}
-     * @memberof DatasetData
-     */
-    id: number
-
     /**
      * Stores the dataset name.
      *
@@ -80,7 +72,7 @@ export interface DatasetData {
      * @type {ExtraData}
      * @memberof DatasetData
      */
-    extra: ExtraData
+    extra?: ExtraData
 }
 
 /**
@@ -91,7 +83,7 @@ export interface DatasetData {
  * @returns {obj is DatasetData}
  */
 export function isDatasetData(obj: any): obj is DatasetData {
-    return 'id' in obj && 'name' in obj && 'values' in obj && 'extra' in obj
+    return 'name' in obj && 'values' in obj
 }
 
 /**

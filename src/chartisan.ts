@@ -414,10 +414,10 @@ export abstract class Chartisan<D> {
      *
      * @protected
      * @param {ServerData} response
-     * @returns
+     * @returns {D}
      * @memberof Chartisan
      */
-    protected getDataFrom(response: ServerData) {
+    protected getDataFrom(response: ServerData): D {
         let data = this.formatData(response)
         if (this.options.hooks) {
             for (const hook of this.options.hooks.hooks) {

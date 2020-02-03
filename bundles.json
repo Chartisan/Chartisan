@@ -1,6 +1,10 @@
 [
     {
         "input": "src/index.ts",
-        "output": "dist/chartisan.js"
+        "output": "dist/chartisan.es.js",
+        "format": "es",
+        "globals": {
+            "deepmerge": "merge"
+        }
     }
 ]

@@ -1,8 +1,9 @@
 {
     "name": "@chartisan/chartisan",
-    "version": "1.0.1",
+    "version": "1.0.7",
     "description": "Supercharged language agnostic charts",
-    "main": "dist/chartisan.js",
+    "main": "dist/chartisan.es.js",
+    "module": "dist/chartisan.es.js",
     "types": "dist/types/index.d.ts",
     "repository": {
         "type": "git",
@@ -27,11 +28,14 @@
     ],
     "author": "Èrik Campobadal Forés <soc@erik.cat>",
     "license": "MIT",
+    "files": [
+        "dist"
+    ],
     "devDependencies": {
         "@types/node": "^12.12.21",
         "typedoc": "^0.16.5",
         "typescript": "^3.7.3",
-        "ultrabundle": "^0.1.1"
+        "ultrabundle": "^1.0.2"
     },
     "dependencies": {
         "deepmerge": "^4.2.2"

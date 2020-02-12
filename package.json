@@ -14,8 +14,7 @@
         "watch": "ultrabundle --watch",
         "prod": "ultrabundle --optimize",
         "docs": "typedoc src",
-        "release": "npm run prod && npm run docs",
-        "publish": "npm run release && npm publish --access public"
+        "release": "npm run prod && npm run docs"
     },
     "keywords": [
         "Chart",

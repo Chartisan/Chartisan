@@ -32,7 +32,7 @@ export interface ChartisanOptions<D>
      * @type {string}
      * @memberof ChartisanOptions
      */
-    el?: string
+    el?: string | Element
 
     /**
      * Determines the options of the loader.
@@ -181,7 +181,7 @@ export abstract class Chartisan<D> {
      * @memberof Chartisan
      */
     protected options: ChartisanOptions<D> = {
-        el: '.chart',
+        el: '.chartisan',
         url: undefined,
         options: undefined,
         data: undefined,
@@ -258,12 +258,16 @@ export abstract class Chartisan<D> {
      */
     constructor(options: ChartisanOptions<D>) {
         const { el } = (this.options = { ...this.options, ...options })
-        const element = document.querySelector(el!)
-        if (!element)
-            throw Error(
-                `[Chartisan] Unable to find an element to bind the chart to a DOM element with the selector = '${el}'`
-            )
-        this.element = element
+        if (typeof el! === 'string') {
+            const element = document.querySelector(el!)
+            if (!element)
+                throw Error(
+                    `[Chartisan] Unable to find an element to bind the chart to a DOM element with the selector = '${el}'`
+                )
+            this.element = element
+        } else {
+            this.element = el!
+        }
         this.controller = document.createElement('div')
         this.body = document.createElement('div')
         this.modal = document.createElement('div')

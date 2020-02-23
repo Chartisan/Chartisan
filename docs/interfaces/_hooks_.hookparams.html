@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ErrorOptions | @chartisan/chartisan</title>
+	<title>HookParams | @chartisan/chartisan</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_error_index_.html">&quot;error/index&quot;</a>
+					<a href="../modules/_hooks_.html">&quot;hooks&quot;</a>
 				</li>
 				<li>
-					<a href="_error_index_.erroroptions.html">ErrorOptions</a>
+					<a href="_hooks_.hookparams.html">HookParams</a>
 				</li>
 			</ul>
-			<h1>Interface ErrorOptions</h1>
+			<h1>Interface HookParams&lt;D&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -72,22 +72,33 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Determine the error options.</p>
+						<p>Determines the parameters that the hooks can take.</p>
 					</div>
 					<dl class="tsd-comment-tags">
 						<dt>export</dt>
 						<dd></dd>
 						<dt>interface</dt>
-						<dd><p>ErrorOptions</p>
+						<dd><p>HookParams</p>
+						</dd>
+						<dt>template</dt>
+						<dd><p>D</p>
 						</dd>
 					</dl>
 				</div>
+			</section>
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>D</h4>
+					</li>
+				</ul>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ErrorOptions</span>
+						<span class="target">HookParams</span>
 					</li>
 				</ul>
 			</section>
@@ -98,12 +109,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_error_index_.erroroptions.html#color" class="tsd-kind-icon">color</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_error_index_.erroroptions.html#debug" class="tsd-kind-icon">debug</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_error_index_.erroroptions.html#size" class="tsd-kind-icon">size</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_error_index_.erroroptions.html#text" class="tsd-kind-icon">text</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_error_index_.erroroptions.html#textcolor" class="tsd-kind-icon">text<wbr>Color</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_error_index_.erroroptions.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_hooks_.hookparams.html#data" class="tsd-kind-icon">data</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_hooks_.hookparams.html#merge" class="tsd-kind-icon">merge</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_hooks_.hookparams.html#server" class="tsd-kind-icon">server</a></li>
 							</ul>
 						</section>
 					</div>
@@ -112,64 +120,65 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="color" class="tsd-anchor"></a>
-					<h3>color</h3>
-					<div class="tsd-signature tsd-kind-icon">color<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="data" class="tsd-anchor"></a>
+					<h3>data</h3>
+					<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">D</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Chartisan/Chartisan/blob/3c0c76d/src/error/index.ts#L12">error/index.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/Chartisan/Chartisan/blob/3c0c76d/src/hooks.ts#L17">hooks.ts:17</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Determines the data of the hook.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>memberof</dt>
+							<dd><p>HookParams</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="debug" class="tsd-anchor"></a>
-					<h3>debug</h3>
-					<div class="tsd-signature tsd-kind-icon">debug<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="merge" class="tsd-anchor"></a>
+					<h3>merge</h3>
+					<div class="tsd-signature tsd-kind-icon">merge<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">typeof </span><span class="tsd-signature-type">mergeOptions</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Chartisan/Chartisan/blob/3c0c76d/src/error/index.ts#L17">error/index.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/Chartisan/Chartisan/blob/3c0c76d/src/hooks.ts#L24">hooks.ts:24</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Passes a merge option.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>memberof</dt>
+							<dd><p>HookParams</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="size" class="tsd-anchor"></a>
-					<h3>size</h3>
-					<div class="tsd-signature tsd-kind-icon">size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span></div>
+					<a name="server" class="tsd-anchor"></a>
+					<h3>server</h3>
+					<div class="tsd-signature tsd-kind-icon">server<span class="tsd-signature-symbol">:</span> <a href="_data_.serverdata.html" class="tsd-signature-type">ServerData</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Chartisan/Chartisan/blob/3c0c76d/src/error/index.ts#L14">error/index.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/Chartisan/Chartisan/blob/3c0c76d/src/hooks.ts#L32">hooks.ts:32</a></li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="text" class="tsd-anchor"></a>
-					<h3>text</h3>
-					<div class="tsd-signature tsd-kind-icon">text<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Chartisan/Chartisan/blob/3c0c76d/src/error/index.ts#L13">error/index.ts:13</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="textcolor" class="tsd-anchor"></a>
-					<h3>text<wbr>Color</h3>
-					<div class="tsd-signature tsd-kind-icon">text<wbr>Color<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Chartisan/Chartisan/blob/3c0c76d/src/error/index.ts#L15">error/index.ts:15</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="type" class="tsd-anchor"></a>
-					<h3>type</h3>
-					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <a href="../modules/_error_index_.html#errortype" class="tsd-signature-type">ErrorType</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Chartisan/Chartisan/blob/3c0c76d/src/error/index.ts#L16">error/index.ts:16</a></li>
-						</ul>
-					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Determines the server data in case
+							extra information is needed.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>memberof</dt>
+							<dd><p>HookParams</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -185,13 +194,13 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_data_.html">&quot;data&quot;</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_error_index_.html">&quot;error/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_helpers_.html">&quot;helpers&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/_hooks_.html">&quot;hooks&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -204,41 +213,32 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../classes/_hooks_.hooks.html" class="tsd-kind-icon">Hooks</a>
+					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_error_index_.erroroptions.html" class="tsd-kind-icon">Error<wbr>Options</a>
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_hooks_.hookparams.html" class="tsd-kind-icon">Hook<wbr>Params</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_error_index_.erroroptions.html#color" class="tsd-kind-icon">color</a>
+								<a href="_hooks_.hookparams.html#data" class="tsd-kind-icon">data</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_error_index_.erroroptions.html#debug" class="tsd-kind-icon">debug</a>
+								<a href="_hooks_.hookparams.html#merge" class="tsd-kind-icon">merge</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_error_index_.erroroptions.html#size" class="tsd-kind-icon">size</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_error_index_.erroroptions.html#text" class="tsd-kind-icon">text</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_error_index_.erroroptions.html#textcolor" class="tsd-kind-icon">text<wbr>Color</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_error_index_.erroroptions.html#type" class="tsd-kind-icon">type</a>
+								<a href="_hooks_.hookparams.html#server" class="tsd-kind-icon">server</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/_error_index_.html#errortype" class="tsd-kind-icon">Error<wbr>Type</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_hooks_.ishook.html" class="tsd-kind-icon">is<wbr>Hook</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_error_index_.html#error" class="tsd-kind-icon">error</a>
-					</li>
-					<li class=" tsd-kind-object-literal tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_error_index_.html#errors" class="tsd-kind-icon">errors</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../modules/_hooks_.html#hook" class="tsd-kind-icon">Hook</a>
 					</li>
 				</ul>
 			</nav>

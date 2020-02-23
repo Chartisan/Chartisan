@@ -1,5 +1,5 @@
 import { Hooks } from './hooks'
-import { mergeOptions } from './helpers'
+import { mergeOptions as merge } from './helpers'
 import { isServerData, ServerData } from './data'
 import { error, ErrorOptions } from './error/index'
 import { loader, LoaderOptions } from './loader/index'
@@ -417,15 +417,15 @@ export abstract class Chartisan<D> {
      * the hooks of the chart.
      *
      * @protected
-     * @param {ServerData} response
+     * @param {ServerData} server
      * @returns {D}
      * @memberof Chartisan
      */
-    protected getDataFrom(response: ServerData): D {
-        let data = this.formatData(response)
+    protected getDataFrom(server: ServerData): D {
+        let data = this.formatData(server)
         if (this.options.hooks) {
             for (const hook of this.options.hooks.hooks) {
-                data = hook(data, mergeOptions)
+                data = hook({ data, merge, server })
             }
         }
         return data
@@ -488,6 +488,13 @@ export abstract class Chartisan<D> {
      * @memberof Chartisan
      */
     protected abstract onBackgroundUpdate<U>(data: D, options?: U): void
+
+    /**
+     * Destroys the chart instance if any.
+     *
+     * @memberof Chartisan
+     */
+    protected abstract destroy(): void
 
     /**
      * Handles an error when getting the data of the chart.

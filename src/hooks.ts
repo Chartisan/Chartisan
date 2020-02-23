@@ -1,12 +1,44 @@
 import { mergeOptions } from './helpers'
+import { ServerData } from './data'
 
 /**
- * Stores the hooks.
+ * Determines the parameters that the hooks can take.
+ *
+ * @export
+ * @interface HookParams
+ * @template D
+ */
+export interface HookParams<D> {
+    /**
+     * Determines the data of the hook.
+     *
+     * @memberof HookParams
+     */
+    data: D
+
+    /**
+     * Passes a merge option.
+     *
+     * @memberof HookParams
+     */
+    merge: typeof mergeOptions
+
+    /**
+     * Determines the server data in case
+     * extra information is needed.
+     *
+     * @memberof HookParams
+     */
+    server: ServerData
+}
+
+/**
+ * Determines a hook type.
  *
  * @export
  * @type {Hook}
  */
-export type Hook<D> = (data: D, merge: typeof mergeOptions) => D
+export type Hook<D> = (params: HookParams<D>) => D
 
 /**
  * Determines the interface of a hook
@@ -52,10 +84,22 @@ export class Hooks<D> {
      * Merges the given options to the chart.
      *
      * @param {D} options
-     * @returns
+     * @returns {this}
      * @memberof Hooks
      */
-    options(options: D) {
-        return this.custom((chart, merge) => merge(chart, options))
+    options(options: D): this {
+        return this.custom(({ data, merge }) => merge(data, options))
+    }
+
+    /**
+     * Merges the given hooks with the current ones.
+     *
+     * @param {Hooks<D>} other
+     * @returns {this}
+     * @memberof Hooks
+     */
+    merge(other: Hooks<D>): this {
+        this.hooks = [...this.hooks, ...other.hooks]
+        return this
     }
 }

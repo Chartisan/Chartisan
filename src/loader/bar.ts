@@ -2,9 +2,6 @@ import { LoaderOptions } from './index'
 
 /**
  * The bar loader.
- *
- * @export
- * @param {LoaderOptions} { size, color }
  */
 export default ({ size, color }: LoaderOptions) => `
     <svg width="${size[0]}" height="${size[1]}" viewBox="0 0 135 140" xmlns="http://www.w3.org/2000/svg" fill="${color}">

@@ -1,42 +1,42 @@
 {
-    "name": "@chartisan/chartisan",
-    "version": "2.0.0",
-    "description": "Supercharged language agnostic charts",
-    "main": "dist/chartisan.es.js",
-    "module": "dist/chartisan.es.js",
-    "types": "dist/types/index.d.ts",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/chartisan/chartisan.git"
-    },
-    "scripts": {
-        "dev": "ultrabundle",
-        "watch": "ultrabundle --watch",
-        "prod": "ultrabundle --optimize",
-        "docs": "typedoc src",
-        "release": "npm run prod && npm run docs"
-    },
-    "keywords": [
-        "Chart",
-        "Charts",
-        "Chartisan",
-        "Plot",
-        "Plots",
-        "Graphic",
-        "Graphics"
-    ],
-    "author": "Èrik Campobadal Forés <soc@erik.cat>",
-    "license": "MIT",
-    "files": [
-        "dist"
-    ],
-    "devDependencies": {
-        "@types/node": "^12.12.21",
-        "typedoc": "^0.16.5",
-        "typescript": "^3.7.3",
-        "ultrabundle": "^1.0.2"
-    },
-    "dependencies": {
-        "deepmerge": "^4.2.2"
-    }
+  "name": "@chartisan/chartisan",
+  "version": "2.1.0",
+  "description": "Supercharged language agnostic charts",
+  "main": "dist/chartisan.es.js",
+  "module": "dist/chartisan.es.js",
+  "types": "dist/types/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chartisan/chartisan.git"
+  },
+  "scripts": {
+    "dev": "ultrabundle",
+    "watch": "ultrabundle --watch",
+    "prod": "ultrabundle --optimize",
+    "docs": "typedoc src",
+    "release": "npm run prod && npm run docs"
+  },
+  "keywords": [
+    "Chart",
+    "Charts",
+    "Chartisan",
+    "Plot",
+    "Plots",
+    "Graphic",
+    "Graphics"
+  ],
+  "author": "Èrik Campobadal Forés <soc@erik.cat>",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@types/node": "^12.12.21",
+    "typedoc": "^0.16.5",
+    "typescript": "^3.7.3",
+    "ultrabundle": "^1.0.2"
+  },
+  "dependencies": {
+    "deepmerge": "^4.2.2"
+  }
 }

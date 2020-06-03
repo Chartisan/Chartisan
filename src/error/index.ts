@@ -1,24 +1,27 @@
 import general from './general'
 
+/**
+ * Represents the error types available.
+ */
 export type ErrorType = 'general'
 
 /**
  * Determine the error options.
- *
- * @export
- * @interface ErrorOptions
  */
 export interface ErrorOptions {
-    color: string
-    text: string
-    size: [number, number]
-    textColor: string
-    type: ErrorType
-    debug: boolean
+  color: string
+  text: string
+  size: [number, number]
+  textColor: string
+  type: ErrorType
+  debug: boolean
 }
 
+/**
+ * HTML Errors available.
+ */
 const errors = {
-    general
+  general,
 }
 
 export const error = (options: ErrorOptions, error: Error) => `
@@ -27,20 +30,21 @@ export const error = (options: ErrorOptions, error: Error) => `
         ${errors[options.type](options)}
     </div>
     ${
-        options.text != ''
-            ? `
-                <div class="chartisan-help-text" style="color: ${options.textColor};">
-                    ${options.text}
-                </div>
+      options.text != ''
+        ? `
+            <div class="chartisan-help-text" style="color: ${options.textColor};">
+                ${options.text}
+            </div>
             `
-            : ''
+        : ''
     }
     ${
-        options.debug
-            ? `<div class="chartisan-help-text-error">
-        ${error.message}
-    </div>`
-            : ''
+      options.debug
+        ? `
+            <div class="chartisan-help-text-error">
+                ${error.message}
+            </div>`
+        : ''
     }
     </div>
 `

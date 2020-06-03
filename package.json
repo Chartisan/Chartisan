@@ -1,6 +1,6 @@
 {
   "name": "@chartisan/chartisan",
-  "version": "2.1.0",
+  "version": "3.0.5",
   "description": "Supercharged language agnostic charts",
   "main": "dist/chartisan.es.js",
   "module": "dist/chartisan.es.js",

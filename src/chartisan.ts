@@ -179,12 +179,22 @@ export abstract class Chartisan<D> {
       const element = document.querySelector(el!)
       if (!element)
         throw Error(
-          `[Chartisan] Unable to find an element to bind the chart to a DOM element with the selector = '${el}'`
+          `[Chartisan] Unable to find an element to bind the chart to a DOM element with the selector: '${el}'`
         )
       this.element = element
     } else {
       this.element = el!
     }
+
+    // Check to see if there's already a chart controller in the element.
+    if (this.element.querySelector('.chartisan-controller')) {
+      // There seems to be a chart already created there. We don't create a new chart since
+      // we have no access to the chart instance that might be stored there. Overwriting the
+      // existing chart will lead to a memory leak and a possible malfunction of the other instance.
+      // The best we can do is to throw an error to indicate what's going on.
+      throw Error(`[Chartisan] There seems to be a chart already at the element selected by: '${el}'`)
+    }
+
     this.controller = document.createElement('div')
     this.body = document.createElement('div')
     this.modal = document.createElement('div')
@@ -294,6 +304,17 @@ export abstract class Chartisan<D> {
   }
 
   /**
+   * Destroys the chart instance and removes
+   * the controller node from the DOM.
+   */
+  destroy() {
+    // Call the onDestroy method.
+    this.onDestroy()
+    // Remove the controller from the DOM.
+    this.controller.remove()
+  }
+
+  /**
    * Gets the data from a given request, applying
    * the hooks of the chart.
    */
@@ -336,9 +357,9 @@ export abstract class Chartisan<D> {
   protected abstract onBackgroundUpdate<U>(data: D, options?: U): void
 
   /**
-   * Destroys the chart instance if any.
+   * Handles a successful destroy call.
    */
-  abstract destroy(): void
+  protected abstract onDestroy(): void
 
   /**
    * Handles an error when getting the data of the chart.

@@ -12,6 +12,7 @@ export enum ChartState {
   Loading = 'loading',
   Error = 'error',
   Show = 'show',
+  Destroyed = 'destroyed',
 }
 
 /**
@@ -312,6 +313,8 @@ export abstract class Chartisan<D> {
     this.onDestroy()
     // Remove the controller from the DOM.
     this.controller.remove()
+    // Update the chart status.
+    this.changeTo(ChartState.Destroyed)
   }
 
   /**

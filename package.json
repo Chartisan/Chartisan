@@ -1,9 +1,9 @@
 {
   "name": "@chartisan/chartisan",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "Supercharged language agnostic charts",
   "source": "src/index.ts",
-  "main": "dist/chartisan.es.js",
+  "main": "dist/chartisan.js",
   "module": "dist/chartisan.module.js",
   "unpkg": "dist/chartisan.umd.js",
   "types": "dist/types/index.d.ts",

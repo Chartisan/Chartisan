@@ -39,7 +39,7 @@ export interface LoaderOptions {
  * Determines the available loaders.
  */
 const loaders = {
-  bar,
+  bar, infinite
 }
 
 /**

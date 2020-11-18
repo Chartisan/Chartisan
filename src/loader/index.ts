@@ -1,4 +1,5 @@
 import bar from './bar'
+import infinite from './infinite'
 
 /**
  * Determines the available loader types.

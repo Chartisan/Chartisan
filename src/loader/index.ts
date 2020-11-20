@@ -49,12 +49,13 @@ const loaders = {
 export const loader = (options: LoaderOptions) => `
     <div class="chartisan-help-block">
         ${loaders[options.type](options)}
-        ${options.text != ''
-    ? `
+        ${
+          options.text != ''
+            ? `
                 <div class="chartisan-help-text" style="color: ${options.textColor};">
                     ${options.text}
                 </div>`
-    : ''
-  }
+            : ''
+        }
     </div>
 `

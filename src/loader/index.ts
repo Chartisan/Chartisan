@@ -4,7 +4,7 @@ import infinite from './infinite'
 /**
  * Determines the available loader types.
  */
-export type LoaderType = 'bar'
+export type LoaderType = 'bar' | 'infinite'
 
 /**
  * Determines the options of the loader.
@@ -49,13 +49,12 @@ const loaders = {
 export const loader = (options: LoaderOptions) => `
     <div class="chartisan-help-block">
         ${loaders[options.type](options)}
-        ${
-          options.text != ''
-            ? `
+        ${options.text != ''
+    ? `
                 <div class="chartisan-help-text" style="color: ${options.textColor};">
                     ${options.text}
                 </div>`
-            : ''
-        }
+    : ''
+  }
     </div>
 `

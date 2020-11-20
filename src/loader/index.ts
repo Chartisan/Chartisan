@@ -1,9 +1,10 @@
 import bar from './bar'
+import infinite from './infinite'
 
 /**
  * Determines the available loader types.
  */
-export type LoaderType = 'bar'
+export type LoaderType = 'bar' | 'infinite'
 
 /**
  * Determines the options of the loader.
@@ -39,7 +40,7 @@ export interface LoaderOptions {
  * Determines the available loaders.
  */
 const loaders = {
-  bar,
+  bar, infinite
 }
 
 /**
